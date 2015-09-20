@@ -1,0 +1,32 @@
+{
+  "name": "mz-assistant",
+  "version": "1.0.0",
+  "description": "Managerzone assistant, helping to prepare to the match",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "autoprefixer": "^6.0.2",
+    "grunt": "^0.4.5",
+    "grunt-babel": "^5.0.1",
+    "grunt-contrib-clean": "^0.6.0",
+    "grunt-contrib-coffee": "^0.13.0",
+    "grunt-contrib-concat": "^0.5.1",
+    "grunt-contrib-cssmin": "^0.13.0",
+    "grunt-contrib-imagemin": "^0.9.4",
+    "grunt-contrib-jshint": "^0.11.3",
+    "grunt-contrib-sass": "^0.9.2",
+    "grunt-contrib-uglify": "^0.9.2",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-postcss": "^0.6.0"
+  },
+  "dependencies": {
+    "mocha": "^2.3.2",
+    "needle": "^0.10.0",
+    "xmldom": "^0.1.19",
+    "xpath": "0.0.9"
+  }
+}
