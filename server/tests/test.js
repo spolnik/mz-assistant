@@ -1,64 +1,58 @@
 'use strict';
-let MatchParser = require('../components/MatchParser'),
+let FixturesParser = require('../components/FixturesParser'),
     assert = require('assert');
 
 let data = `<?xml version="1.0" encoding="utf-8"?>
 <ManagerZone_MatchList>
-    <Match id="809812100" date="2015-09-19 18:00" status="played" type="cup_group" typeName="Division Cup Season 55 - Poland Division 6" typeId="14751">
-        <Team field="home" goals="2" teamId="423979" teamName="Arka Gdynia" countryShortname="pl"/>
-        <Team field="away" goals="1" teamId="376708" teamName="LG Zambrow" countryShortname="pl"/>
-    </Match><Match id="809340421" date="2015-09-19 16:00" status="played" type="friendly_series" typeName="[Pool] Senior - Daily #2334" typeId="569759">
-    <Team field="home" goals="1" teamId="423979" teamName="Arka Gdynia" countryShortname="pl"/>
-    <Team field="away" goals="1" teamId="469306" teamName="Me explico" countryShortname="ar"/>
-</Match><Match id="809342678" date="2015-09-19 16:00" status="played" type="friendly_series" typeName="[Pool] Senior - Daily #2335" typeId="569761">
-    <Team field="home" goals="1" teamId="423979" teamName="Arka Gdynia" countryShortname="pl"/>
-    <Team field="away" goals="12" teamId="224324" teamName="Facopo" countryShortname="br"/>
-</Match><Match id="809340416" date="2015-09-18 16:00" status="played" type="friendly_series" typeName="[Pool] Senior - Daily #2334" typeId="569759">
-    <Team field="home" goals="2" teamId="992651" teamName="Cuchilla entre los Diente" countryShortname="ar"/>
-    <Team field="away" goals="1" teamId="423979" teamName="Arka Gdynia" countryShortname="pl"/>
-</Match><Match id="809342663" date="2015-09-18 16:00" status="played" type="friendly_series" typeName="[Pool] Senior - Daily #2335" typeId="569761">
-    <Team field="home" goals="11" teamId="133457" teamName="Poli Timisoara" countryShortname="at"/>
-    <Team field="away" goals="0" teamId="423979" teamName="Arka Gdynia" countryShortname="pl"/>
-</Match><Match id="809340405" date="2015-09-17 16:00" status="played" type="friendly_series" typeName="[Pool] Senior - Daily #2334" typeId="569759">
-    <Team field="home" goals="2" teamId="423979" teamName="Arka Gdynia" countryShortname="pl"/>
-    <Team field="away" goals="4" teamId="895732" teamName="YILDIZ SPOR" countryShortname="tr"/>
-</Match><Match id="809342656" date="2015-09-17 16:00" status="played" type="friendly_series" typeName="[Pool] Senior - Daily #2335" typeId="569761">
-    <Team field="home" goals="0" teamId="423979" teamName="Arka Gdynia" countryShortname="pl"/>
-    <Team field="away" goals="8" teamId="313761" teamName="Olivos City F.C." countryShortname="ar"/>
-</Match><Match id="809342648" date="2015-09-16 16:00" status="played" type="friendly_series" typeName="[Pool] Senior - Daily #2335" typeId="569761">
-    <Team field="home" goals="6" teamId="973333" teamName="Papato Tatengue" countryShortname="ar"/>
-    <Team field="away" goals="0" teamId="423979" teamName="Arka Gdynia" countryShortname="pl"/>
-</Match><Match id="809340401" date="2015-09-16 16:00" status="played" type="friendly_series" typeName="[Pool] Senior - Daily #2334" typeId="569759">
-    <Team field="home" goals="6" teamId="975142" teamName="Belfegor FC" countryShortname="ar"/>
-    <Team field="away" goals="0" teamId="423979" teamName="Arka Gdynia" countryShortname="pl"/>
-</Match><Match id="798972533" date="2015-09-16 13:15" status="played" type="league" typeName="div6.41" typeId="18695">
-    <Team field="home" goals="0" teamId="205610" teamName="FC BARCA" countryShortname="pl"/>
-    <Team field="away" goals="11" teamId="423979" teamName="Arka Gdynia" countryShortname="pl"/>
+<Match id="799026525" date="2015-09-20 15:15" status="scheduled" type="league" typeName="div6.450" typeId="19104">
+ <Team field="home" goals="0" teamId="402457" teamName="FC Tyniec" countryShortname="pl"/>
+ <Team field="away" goals="0" teamId="201674" teamName="Kluski Team" countryShortname="pl"/>
+</Match><Match id="809994669" date="2015-09-21 11:00" status="scheduled" type="" typeName="div6.73" typeId="437">
+ <Team field="home" goals="0" teamId="579759" teamName="≮自由Ⅴ梦想≯Tuha Oilfield™ F.C" countryShortname="cn"/>
+ <Team field="away" goals="0" teamId="402457" teamName="FC Tyniec" countryShortname="pl"/>
+</Match><Match id="809812102" date="2015-09-22 18:00" status="scheduled" type="cup_group" typeName="Division Cup Season 55 - Poland Division 6" typeId="14751">
+ <Team field="home" goals="0" teamId="423979" teamName="Arka Gdynia" countryShortname="pl"/>
+ <Team field="away" goals="0" teamId="402457" teamName="FC Tyniec" countryShortname="pl"/>
+</Match><Match id="809994674" date="2015-09-22 18:15" status="scheduled" type="" typeName="div6.73" typeId="437">
+ <Team field="home" goals="0" teamId="402457" teamName="FC Tyniec" countryShortname="pl"/>
+ <Team field="away" goals="0" teamId="311238" teamName="R.C. Deportivo" countryShortname="ar"/>
 </Match></ManagerZone_MatchList>`;
 
-describe('MatchParser', () => {
+describe('FixturesParser', () => {
     before(() => {
-        this._result = new MatchParser().parse(data);
-        this._match = this._result[0];
+        this._result = new FixturesParser().parse(data, "402457");
+        this._fixture = this._result[0];
     });
 
-    describe('Parse Result', () => {
-        it('should return 10 when there is 10 matches in the input', () => {
-            assert.equal(10, this._result.length);
-        })
+    describe('result.length', () => {
+        it('should return 4 when there is 4 matches in the input data', () => {
+            assert.equal(4, this._result.length);
+        });
     });
 
     describe('result[0] (Match)', () => {
-        it('should return 809812100 as match id', () => {
-            assert.equal('809812100', this._match.id);
-        });
+        it('should return 799026525 as match id', () =>
+            assert.equal('799026525', this._fixture.id)
+        );
 
-        it('should return cup_group as match type', () => {
-            assert.equal('cup_group', this._match.type);
-        });
+        it('should return league as match type', () =>
+            assert.equal('league', this._fixture.type)
+        );
 
-        it('should return Division Cup Season 55 - Poland Division 6 as match type name', () => {
-            assert.equal('Division Cup Season 55 - Poland Division 6', this._match.typeName);
-        });
+        it('should return div6.450 as match type name', () =>
+            assert.equal('div6.450', this._fixture.typeName)
+        );
+
+        it('should return 201674 as opponent team id', () =>
+            assert.equal(201674, this._fixture.teamId)
+        );
+
+        it('should return Kluski Team as opponent team name', () =>
+            assert.equal('Kluski Team', this._fixture.teamName)
+        );
+
+        it('should return 2015-09-20 15:15 as the match date', () =>
+            assert.equal('2015-09-20 15:15', this._fixture.date)
+        );
     });
 });

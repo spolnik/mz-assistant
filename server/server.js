@@ -2,12 +2,12 @@
 
 var restify = require('restify'),
     needle = require('needle'),
-    MatchParser = require('./components/MatchParser');
+    FixturesParser = require('./components/FixturesParser');
 
 function respond(req, res, next) {
 
-    let teamMatchesUrl = `http://www.managerzone.com/xml/team_matchlist.php?sport_id=1&team_id=${req.params.id}&match_status=1&limit=10`;
-    console.log(teamMatchesUrl);
+    let teamMatchesUrl =
+        `http://www.managerzone.com/xml/team_matchlist.php?sport_id=1&team_id=${req.params.id}&match_status=2&limit=500`;
 
     needle.get(teamMatchesUrl, (err, resp) => {
         if (err) {
@@ -15,8 +15,8 @@ function respond(req, res, next) {
             next();
         }
 
-        let matches = new MatchParser().parse(resp.body);
-        let team = {id: req.params.id, matches: matches};
+        let fixtures = new FixturesParser().parse(resp.body, req.params.id, req.params.type);
+        let team = {id: req.params.id, fixtures: fixtures};
         res.send(team);
         next();
     });
@@ -34,7 +34,16 @@ server.use(
     }
 );
 
-server.get('/team/:id', respond);
+server.get('/fixtures/team/:id', respond);
+server.get('/fixtures/team/:id/type/:type', respond);
+server.get('/fixtures/types', (req, res, next) => {
+    var types = ['world_league', 'cup_group', 'cup_playoff', 'private_cup_group',
+        'private_cup_playoff', 'special', 'friendly', 'league', 'friendly_series',
+        'qualification'];
+
+    res.send(types);
+    next();
+});
 
 server.listen(8080, function() {
     console.log('%s listening at %s', server.name, server.url);
