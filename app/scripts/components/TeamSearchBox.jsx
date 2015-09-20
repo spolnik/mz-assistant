@@ -53,7 +53,7 @@ class TeamSearchBox extends React.Component {
 
     render() {
         var fixtrureNodes = this.state.fixtures.map(item => {
-            return <a href="#" className="list-group-item row">
+            return <a href={"http://mzplus.com.ar/i?eq=" + item.teamId} target="_blank" className="list-group-item row">
                 <span className="col-sm-2">{item.date}</span>
                 <span className="col-sm-2">{TeamSearchBox._getType(item.type)}</span>
                 <span className="col-sm-4">{item.typeName || "-"}</span>
