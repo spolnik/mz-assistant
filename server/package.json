@@ -1,0 +1,16 @@
+{
+  "name": "mz-assistant",
+  "version": "1.0.0",
+  "description": "Managerzone assistant, helping to prepare to the match",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "needle": "^0.10.0",
+    "xmldom": "^0.1.19",
+    "xpath": "0.0.9"
+  }
+}
