@@ -4,6 +4,7 @@ class TeamSearchBox extends React.Component {
         super(props);
         this.state = {
             teamId: 402457,
+            status: 1,
             fixtures: []
         };
     }
@@ -21,7 +22,7 @@ class TeamSearchBox extends React.Component {
     }
 
     _reloadData() {
-        let teamMatchesUrl = `http://localhost:8080/fixtures/team/${this.state.teamId}`;
+        let teamMatchesUrl = `http://localhost:8080/fixtures/team/${this.state.teamId}/status/${this.state.status}`;
         console.log("Team Matches url: " + teamMatchesUrl);
 
         $.get(teamMatchesUrl, data => this.setState({fixtures: data.fixtures}))
@@ -53,7 +54,7 @@ class TeamSearchBox extends React.Component {
 
     render() {
         var fixtrureNodes = this.state.fixtures.map(item => {
-            return <a href={"http://mzplus.com.ar/i?eq=" + item.teamId} target="_blank" className="list-group-item row">
+            return <a href={"http://managerzone.com/?p=match&sub=result&tid=" + item.teamId + "&mid=" + item.id} target="_blank" className="list-group-item row">
                 <span className="col-sm-2">{item.date}</span>
                 <span className="col-sm-2">{TeamSearchBox._getType(item.type)}</span>
                 <span className="col-sm-4">{item.typeName || "-"}</span>
@@ -77,6 +78,11 @@ class TeamSearchBox extends React.Component {
                         <button type="submit" className="btn btn-default" onClick={this._submitSearch.bind(this)}>
                             Refresh
                         </button>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox"> Future fixtures </input>
+                            </label>
+                        </div>
                     </div>
                 </div>
                 <output>
@@ -92,4 +98,4 @@ class TeamSearchBox extends React.Component {
             </form>
         </div>;
     }
-}
+};

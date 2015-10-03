@@ -6,8 +6,10 @@ var restify = require('restify'),
 
 function respond(req, res, next) {
 
+    let status = req.params.status || 2;
+
     let teamMatchesUrl =
-        `http://www.managerzone.com/xml/team_matchlist.php?sport_id=1&team_id=${req.params.id}&match_status=2&limit=500`;
+        `http://www.managerzone.com/xml/team_matchlist.php?sport_id=1&team_id=${req.params.id}&match_status=${status}&limit=500`;
 
     needle.get(teamMatchesUrl, (err, resp) => {
         if (err) {
@@ -36,6 +38,7 @@ server.use(
 
 server.get('/fixtures/team/:id', respond);
 server.get('/fixtures/team/:id/type/:type', respond);
+server.get('/fixtures/team/:id/status/:status', respond);
 server.get('/fixtures/types', (req, res, next) => {
     var types = ['world_league', 'cup_group', 'cup_playoff', 'private_cup_group',
         'private_cup_playoff', 'special', 'friendly', 'league', 'friendly_series',

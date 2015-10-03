@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "needle": "^0.10.0",
+    "restify": "^4.0.3",
     "xmldom": "^0.1.19",
     "xpath": "0.0.9"
   }
