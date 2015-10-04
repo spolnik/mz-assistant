@@ -2,12 +2,17 @@
 
 var restify = require('restify'),
     needle = require('needle'),
-    FixturesParser = require('./components/FixturesParser');
+    MatchListParser = require('./components/MatchListParser');
 
-function respond(req, res, next) {
+function respondWithFixtures(req, res, next) {
+    respond('2', req, res, next);
+}
 
-    let status = req.params.status || 2;
+function respondWithResults(req, res, next) {
+    respond('1', req, res, next);
+}
 
+function respond(status, req, res, next) {
     let teamMatchesUrl =
         `http://www.managerzone.com/xml/team_matchlist.php?sport_id=1&team_id=${req.params.id}&match_status=${status}&limit=500`;
 
@@ -17,14 +22,14 @@ function respond(req, res, next) {
             next();
         }
 
-        let fixtures = new FixturesParser().parse(resp.body, req.params.id, req.params.type);
-        let team = {id: req.params.id, fixtures: fixtures};
+        let matches = new MatchListParser().parse(resp.body, req.params.id, req.params.type);
+        let team = {id: req.params.id, matches: matches};
         res.send(team);
         next();
     });
 }
 
-var server = restify.createServer({
+let server = restify.createServer({
     name: 'MZ Assistant Server'
 });
 
@@ -36,10 +41,13 @@ server.use(
     }
 );
 
-server.get('/fixtures/team/:id', respond);
-server.get('/fixtures/team/:id/type/:type', respond);
-server.get('/fixtures/team/:id/status/:status', respond);
-server.get('/fixtures/types', (req, res, next) => {
+server.get('/fixtures/team/:id', respondWithFixtures);
+server.get('/fixtures/team/:id/type/:type', respondWithFixtures);
+
+server.get('/results/team/:id', respondWithResults);
+server.get('/results/team/:id/type/:type');
+
+server.get('/matches/types', (req, res, next) => {
     var types = ['world_league', 'cup_group', 'cup_playoff', 'private_cup_group',
         'private_cup_playoff', 'special', 'friendly', 'league', 'friendly_series',
         'qualification'];
@@ -48,6 +56,6 @@ server.get('/fixtures/types', (req, res, next) => {
     next();
 });
 
-server.listen(8080, function() {
+server.listen(8080, function () {
     console.log('%s listening at %s', server.name, server.url);
 });

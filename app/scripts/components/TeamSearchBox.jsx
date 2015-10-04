@@ -3,7 +3,7 @@ class TeamSearchBox extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            teamId: 402457,
+            opponentTeamId: 402457,
             status: 1,
             fixtures: []
         };
@@ -13,7 +13,7 @@ class TeamSearchBox extends React.Component {
         event.preventDefault();
         var teamId = $('#inputTeamId').val();
 
-        this.setState({teamId: teamId});
+        this.setState({opponentTeamId: teamId});
         this._reloadData();
     }
 
@@ -22,7 +22,7 @@ class TeamSearchBox extends React.Component {
     }
 
     _reloadData() {
-        let teamMatchesUrl = `http://localhost:8080/fixtures/team/${this.state.teamId}/status/${this.state.status}`;
+        let teamMatchesUrl = `http://localhost:8080/fixtures/team/${this.state.opponentTeamId}/status/${this.state.status}`;
         console.log("Team Matches url: " + teamMatchesUrl);
 
         $.get(teamMatchesUrl, data => this.setState({fixtures: data.fixtures}))
@@ -54,11 +54,11 @@ class TeamSearchBox extends React.Component {
 
     render() {
         var fixtrureNodes = this.state.fixtures.map(item => {
-            return <a href={"http://managerzone.com/?p=match&sub=result&tid=" + item.teamId + "&mid=" + item.id} target="_blank" className="list-group-item row">
+            return <a href={"http://managerzone.com/?p=match&sub=result&tid=" + item.opponentTeamId + "&mid=" + item.id} target="_blank" className="list-group-item row">
                 <span className="col-sm-2">{item.date}</span>
                 <span className="col-sm-2">{TeamSearchBox._getType(item.type)}</span>
                 <span className="col-sm-4">{item.typeName || "-"}</span>
-                <span className="col-sm-4">{item.teamName}</span>
+                <span className="col-sm-4">{item.opponentTeamName}</span>
             </a>;
         });
 
@@ -88,7 +88,7 @@ class TeamSearchBox extends React.Component {
                 <output>
                     <div className="panel panel-default">
                         <div className="panel-heading">
-                            <h3 className="panel-title">Results for team id: {this.state.teamId}</h3>
+                            <h3 className="panel-title">Results for team id: {this.state.opponentTeamId}</h3>
                         </div>
                         <div className="panel-body">
                             {fixtrureNodes}
