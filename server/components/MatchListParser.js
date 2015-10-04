@@ -33,15 +33,15 @@ class FixturesParser {
                 return teamNode.attributes[1].value
             }
 
+            function getTeamId(teamNode) {
+                return teamNode.attributes[2].value;
+            }
+
+            function getTeamName(teamNode) {
+                return teamNode.attributes[3].value;
+            }
+
             function setOpponentDetails(homeTeam, awayTeam, match) {
-
-                function getTeamId(teamNode) {
-                    return teamNode.attributes[2].value;
-                }
-
-                function getTeamName(teamNode) {
-                    return teamNode.attributes[3].value;
-                }
 
                 let opponentTeamId = getTeamId(homeTeam);
                 let opponentTeam = homeTeam;
@@ -64,9 +64,13 @@ class FixturesParser {
             };
 
             let homeTeam = matchNode.childNodes['1'];
+            match.homeTeamName = getTeamName(homeTeam);
+            match.homeTeamId = getTeamId(homeTeam);
             match.homeTeamGoals = getGoals(homeTeam);
 
             let awayTeam = matchNode.childNodes['3'];
+            match.awayTeamName = getTeamName(awayTeam);
+            match.awayTeamId = getTeamId(awayTeam);
             match.awayTeamGoals = getGoals(awayTeam);
 
             setOpponentDetails(homeTeam, awayTeam, match);

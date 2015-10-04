@@ -45,7 +45,7 @@ server.get('/fixtures/team/:id', respondWithFixtures);
 server.get('/fixtures/team/:id/type/:type', respondWithFixtures);
 
 server.get('/results/team/:id', respondWithResults);
-server.get('/results/team/:id/type/:type');
+server.get('/results/team/:id/type/:type', respondWithResults);
 
 server.get('/matches/types', (req, res, next) => {
     var types = ['world_league', 'cup_group', 'cup_playoff', 'private_cup_group',
