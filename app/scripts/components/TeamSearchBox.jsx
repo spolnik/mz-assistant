@@ -18,22 +18,29 @@ class TeamSearchBox extends React.Component {
             opponentTeamId: $('#inputOpponentTeamId').val()
         });
 
-        this._reloadData();
+        this._reloadFixtures();
+        this._reloadResults();
     }
 
     componentDidMount() {
-        this._reloadData();
+        this._reloadFixtures();
+        this._reloadResults();
     }
 
-    _reloadData() {
-        let teamFixturesUrl = `http://localhost:8080/fixtures/team/${this.state.teamId}`;
-        console.log("Team Matches url: " + teamFixturesUrl);
+    _reloadFixtures() {
+        let teamId = $('#inputTeamId').val();
+
+        let teamFixturesUrl = `http://localhost:8080/fixtures/team/${teamId}`;
 
         $.get(teamFixturesUrl, data => this.setState({fixtures: data.matches}))
             .done(() => console.log("done"))
             .fail((err) => console.error("error: " + err));
+    }
 
-        let teamResultsUrl = `http://localhost:8080/results/team/${this.state.opponentTeamId}`;
+    _reloadResults() {
+        let opponentTeamId = $('#inputOpponentTeamId').val();
+
+        let teamResultsUrl = `http://localhost:8080/results/team/${opponentTeamId}`;
 
         $.get(teamResultsUrl, data => this.setState({results: data.matches}))
             .done(() => console.log("done"))
@@ -62,16 +69,24 @@ class TeamSearchBox extends React.Component {
         }
     }
 
+    _changeOpponentType(event) {
+        event.preventDefault();
+        $('#inputOpponentTeamId').val(this.id);
+        this.that._reloadResults();
+    }
+
     render() {
 
         var fixtureNodes = this.state.fixtures.map(item => {
-            return <a href={"http://managerzone.com/?p=match&sub=result&tid=" + item.opponentTeamId + "&mid=" + item.id} target="_blank" className="list-group-item row">
+            return <div className="list-group-item row">
                 <span className="col-sm-2">{item.date}</span>
                 <span className="col-sm-2">{TeamSearchBox._getType(item.type)}</span>
                 <span className="col-sm-3">{item.typeName || "-"}</span>
                 <span className="col-sm-3">{item.opponentTeamName}</span>
-                <span className="col-sm-2">{item.opponentTeamId}</span>
-            </a>;
+                <button className="col-sm-2 btn btn-default" onClick={this._changeOpponentType.bind({id: item.opponentTeamId, that: this})}>
+                    {item.opponentTeamId}
+                </button>
+            </div>;
         });
 
         var resultNodes = this.state.results.map(item => {
